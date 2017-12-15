@@ -40,6 +40,7 @@ public class Treasure {
 		return id;
 	}
 	
+	// Randomly generate a prize for treasure
 	public Prize getPrize(){
 		Prize[] prizes = Prize.values();
 		Random random = new Random();
