@@ -1,5 +1,7 @@
 package reallyBadName;
 
+import java.util.Random;
+
 public class Treasure {
 
 	private static int count = 0;
@@ -7,11 +9,14 @@ public class Treasure {
 	private int id;
 	private int xCoordTrs;
 	private int yCoordTrs;
+	private Prize prize;
 	
 	public Treasure(int xCoordTrs, int yCoordtrs) {
 		this.id = ++count;
 		this.xCoordTrs = xCoordTrs;
 		this.yCoordTrs = yCoordtrs;
+		
+		this.prize = getPrize();
 	}
 
 	
@@ -33,6 +38,12 @@ public class Treasure {
 
 	public int getId() {
 		return id;
+	}
+	
+	public Prize getPrize(){
+		Prize[] prizes = Prize.values();
+		Random random = new Random();
+		return prizes[random.nextInt(prizes.length)];
 	}
 	
 	
