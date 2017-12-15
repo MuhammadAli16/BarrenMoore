@@ -8,9 +8,12 @@ public class TheGame {
 	private Player pl;
 
 	private ArrayList<Treasure> treasureList = new ArrayList<>();
-
 	private ArrayList<MovingPieces> monsterList = new ArrayList<>();
 
+	// bounds of players spawn - pieces can still move as far as possible
+	final int UPPER = 10;
+	final int LOWER = -10;
+	
 	public void startGame() {
 
 		String intro = "You awaken to find yourself in a barren moor, Whats your name?";
@@ -20,7 +23,7 @@ public class TheGame {
 		// sc.close();
 		createPlayer(name);
 
-		String init = "Try North, East, South or West to find the treasure!";
+		String init = "Try North, East, South or West to find the treasure! \nType quit to exit or type cheat for coord of all pieces";
 		System.out.println(init);
 
 		boolean inputCorrect = false;
@@ -34,7 +37,6 @@ public class TheGame {
 			try {
 				Scanner sc1 = new Scanner(System.in);
 				userInput = sc1.nextLine().toLowerCase();
-				// sc1.reset();
 
 				switch (userInput) {
 				case "north":
@@ -61,7 +63,7 @@ public class TheGame {
 					cheats();
 					break;
 				case "exit":
-					System.out.println("Wimp, bye");
+					System.out.println("Wimp, bye.");
 					System.exit(0);
 					break;
 				default:
@@ -72,12 +74,11 @@ public class TheGame {
 
 				collectedTreasure = checkHit(pl, treasureList.get(0));
 				hitMonster = checkContact(pl, monsterList);
-				System.out.println("MONSTER BOOLEAN " + hitMonster);
-				
-				if (hitMonster){
+
+				if (hitMonster) {
 					break;
 				}
-				
+
 				System.out.println("The dial reads: " + calculateDistance(pl, treasureList.get(0)));
 				System.out.println();
 
@@ -86,18 +87,19 @@ public class TheGame {
 				System.out.println("lol fail in do while loop");
 			}
 
-		} while (!inputCorrect || !collectedTreasure );
+		} while (!inputCorrect || !collectedTreasure);
 
-		if (hitMonster){
+		if (hitMonster) {
 			System.out.println("You just encountered the monster, it has mauled you. You dead. lol");
 		} else {
-			System.out.println("You found the treasure, you win " + treasureList.get(0).getPrize());
+			System.out.println("You found the treasure, you found " + treasureList.get(0).getPrize());
 		}
 	}
 
 	public void createPlayer(String name) {
 
-		System.out.println("Hi " + name + ", You are at: " + 0 + ", " + 0 + ", Monsters lurk these waters so beware and find the hidden treasure!");
+		System.out.println("Hi " + name + ", You are at: " + 0 + ", " + 0
+				+ ", Monsters lurk these waters so beware and find the hidden treasure!");
 		pl = new Player(name, 0, 0);
 
 		CreateTreasure();
@@ -105,9 +107,7 @@ public class TheGame {
 	}
 
 	public void CreateTreasure() {
-		final int UPPER = 5;
-		final int LOWER = -5;
-
+		
 		int x = (int) (Math.random() * (UPPER - LOWER) + LOWER);
 		int y = (int) (Math.random() * (UPPER - LOWER) + LOWER);
 
@@ -117,8 +117,6 @@ public class TheGame {
 	}
 
 	public void CreateMonster() {
-		final int UPPER = 5;
-		final int LOWER = -5;
 
 		int x = (int) (Math.random() * (UPPER - LOWER) + LOWER);
 		int y = (int) (Math.random() * (UPPER - LOWER) + LOWER);
@@ -147,40 +145,38 @@ public class TheGame {
 	public boolean checkContact(Player pl, ArrayList<MovingPieces> mp) {
 
 		for (MovingPieces move : mp) {
-			
+
 			if (move instanceof Monster && move.getxCoord() == pl.getxCoord() && move.getyCoord() == pl.getyCoord()) {
 				return true;
 			}
 		}
-		
 
 		return false;
 	}
-	
-	// move monster -  It can move diagonally 
-	public void moveCloser(MovingPieces movingPieces){
-		
-		
-		if (pl.getxCoord() > movingPieces.getxCoord()){
+
+	// move monster - It can move diagonally
+	public void moveCloser(MovingPieces movingPieces) {
+
+		if (pl.getxCoord() > movingPieces.getxCoord()) {
 			movingPieces.move(Direction.EAST);
-		} else if (pl.getxCoord() < movingPieces.getxCoord()){
+		} else if (pl.getxCoord() < movingPieces.getxCoord()) {
 			movingPieces.move(Direction.WEST);
 		}
-		
-		if (pl.getyCoord() > movingPieces.getyCoord()){
+
+		if (pl.getyCoord() > movingPieces.getyCoord()) {
 			movingPieces.move(Direction.NORTH);
-		} else if (pl.getyCoord() < movingPieces.getyCoord()){
+		} else if (pl.getyCoord() < movingPieces.getyCoord()) {
 			movingPieces.move(Direction.SOUTH);
 		}
-		
+
 	}
-	
+
 	// Shows coord of all pieces on game map
-	public void cheats(){
+	public void cheats() {
 		System.out.println("CHEAT: TREASURE POSITION: " + treasureList.get(0).getxCoordTrs() + " "
 				+ treasureList.get(0).getyCoordTrs());
-		System.out.println("CHEAT: MONSTER POSITION: " + monsterList.get(0).getxCoord() + " "
-						+ monsterList.get(0).getyCoord());
+		System.out.println(
+				"CHEAT: MONSTER POSITION: " + monsterList.get(0).getxCoord() + " " + monsterList.get(0).getyCoord());
 		System.out.println(("DEBUG: YOUR CURRENT POSITION " + pl.getxCoord() + ", " + pl.getyCoord()));
 	}
 
