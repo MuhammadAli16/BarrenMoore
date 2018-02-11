@@ -1,4 +1,4 @@
-package reallyBadName;
+package com.barren;
 
 public abstract class MovingPieces {
 
